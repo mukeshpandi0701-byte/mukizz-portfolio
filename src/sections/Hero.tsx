@@ -151,14 +151,12 @@ export default function Hero() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
         delayChildren: 0.1,
       },
     },
@@ -169,73 +167,80 @@ export default function Hero() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section
+      id="hero"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
+      aria-label="Hero Section"
+      role="banner"
+    >
       <BackgroundGrid />
 
       <div className="relative z-10 w-full max-w-6xl px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+        {/* Container with min-height to prevent layout shift */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center min-h-[600px]">
           {/* ─── LEFT SIDE: Typography + CTAs ───────────────────────────────── */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={mounted ? "visible" : "hidden"}
             className="flex flex-col gap-8"
           >
-            {/* Name — premium gradient */}
+            {/* Main Heading */}
             <motion.div variants={itemVariants}>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
-                <span className="text-gradient-hero block">Mukesh Pandi</span>
+                <span className="text-gradient-hero block">{PERSONAL.name}</span>
               </h1>
             </motion.div>
 
-            {/* Tagline */}
+            {/* Subheading & Bio */}
             <motion.div variants={itemVariants}>
-              <p className="text-lg md:text-xl text-text-secondary font-medium">
-                {PERSONAL.tagline}
-              </p>
+              <h2 className="text-lg md:text-xl text-text-secondary font-medium">{PERSONAL.tagline}</h2>
               <p className="text-sm md:text-base text-text-muted mt-3 max-w-md leading-relaxed">
                 {PERSONAL.bio}
               </p>
             </motion.div>
 
             {/* CTA Buttons */}
-            <motion.div variants={itemVariants} className="flex gap-4 pt-4">
+            <motion.nav variants={itemVariants} className="flex gap-4 pt-4" aria-label="Hero Actions">
               <a
                 href="#projects"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan text-white font-medium transition-all hover:bg-cyan-light focus-visible:outline-2 focus-visible:outline-cyan"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-cyan text-white font-medium transition-all hover:bg-cyan-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
+                aria-label="View my projects"
               >
                 View Work
-                <ArrowUpRight className="h-4 w-4" />
+                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </a>
               <a
                 href={`mailto:${PERSONAL.email}`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg surface-elevated font-medium text-text-primary transition-all hover:border-cyan hover:border hover:surface-elevated focus-visible:outline-2 focus-visible:outline-cyan"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg surface-elevated font-medium text-text-primary transition-all hover:border-cyan hover:border hover:surface-elevated focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
+                aria-label={`Send me an email at ${PERSONAL.email}`}
               >
                 Get In Touch
               </a>
-            </motion.div>
+            </motion.nav>
           </motion.div>
 
           {/* ─── RIGHT SIDE: Technical Composition ──────────────────────────── */}
-          <motion.div
+          <motion.aside
             variants={containerVariants}
             initial="hidden"
-            animate="visible"
+            animate={mounted ? "visible" : "hidden"}
             className="flex flex-col gap-6"
+            aria-label="Developer Status and Activity"
           >
             <StatusIndicator />
             <CurrentFocusPanel />
             <TerminalSnippet />
-          </motion.div>
+          </motion.aside>
         </div>
 
         {/* Scroll indicator */}
-        <ScrollIndicator />
+        {mounted && <ScrollIndicator />}
       </div>
     </section>
   );
