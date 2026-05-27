@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowDown, ArrowUpRight, ExternalLink } from "lucide-react";
 import { PERSONAL } from "../constants/portfolio";
 
