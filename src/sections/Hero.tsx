@@ -1,68 +1,96 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, Variants } from "framer-motion";
-import { ArrowDown, ArrowUpRight, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowDown, ArrowUpRight, Code2 } from "lucide-react";
 import { PERSONAL } from "../constants/portfolio";
+import {
+  containerVariantsLoose,
+  fadeInUp,
+  fadeInRight,
+  scaleIn,
+  floatingVariantsOffset,
+  cardHover,
+} from "../lib/motion";
 
-/* ─── Atmospheric background grid ──────────────────────────────────────────── */
-function BackgroundGrid() {
+/* ─── Animated Background Grid ──────────────────────────────────────────── */
+function AnimatedBackgroundGrid() {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {/* Dot grid pattern */}
-      <svg className="absolute inset-0 h-full w-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+    <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+      {/* Layered dots grid */}
+      <svg
+        className="absolute inset-0 h-full w-full opacity-20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <defs>
-          <pattern id="dots-dark" width="32" height="32" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.7" fill="rgba(255,255,255,0.08)" />
+          <pattern id="dots-premium" width="40" height="40" patternUnits="userSpaceOnUse">
+            <circle cx="20" cy="20" r="0.8" fill="rgba(255,255,255,0.1)" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#dots-dark)" />
+        <rect width="100%" height="100%" fill="url(#dots-premium)" />
       </svg>
 
-      {/* Subtle cyan glow — top left, very minimal */}
-      <div
-        className="absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full"
+      {/* Cyan radial light — top left */}
+      <motion.div
+        className="absolute -top-32 -left-32 h-96 w-96 rounded-full opacity-30"
+        animate={{
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
         style={{
-          background: "radial-gradient(circle, rgba(0,151,178,0.04) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(0,151,178,0.2) 0%, transparent 70%)",
           filter: "blur(80px)",
         }}
       />
 
-      {/* Subtle gold glow — bottom right, whisper only */}
-      <div
-        className="absolute -bottom-48 -right-32 h-[500px] w-[500px] rounded-full"
+      {/* Gold radial light — bottom right */}
+      <motion.div
+        className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full opacity-20"
+        animate={{
+          y: [0, 20, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
         style={{
-          background: "radial-gradient(circle, rgba(184,146,42,0.03) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(184,146,42,0.15) 0%, transparent 70%)",
           filter: "blur(100px)",
         }}
       />
+
+      {/* Vignette overlay */}
+      <div className="absolute inset-0 vignette pointer-events-none" />
     </div>
   );
 }
 
-/* ─── Status indicator with subtle animation ─────────────────────────────── */
-function StatusIndicator() {
+/* ─── Floating Status Badge ────────────────────────────────────────────── */
+function StatusBadge() {
   const { state, available } = PERSONAL.status;
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-      className="flex items-center gap-2"
+      variants={fadeInUp}
+      className="flex items-center gap-2 w-fit"
     >
-      <div className="relative h-2.5 w-2.5">
+      <div className="relative h-3 w-3">
         <div
-          className="absolute inset-0 rounded-full bg-cyan-400"
+          className="absolute inset-0 rounded-full bg-cyan"
           style={{
-            boxShadow: "0 0 8px rgba(0, 200, 220, 0.4)",
+            boxShadow: "0 0 12px rgba(0, 200, 220, 0.5)",
           }}
         />
         {available && (
           <div
-            className="absolute inset-0 rounded-full bg-cyan-400 animate-breathe"
+            className="absolute inset-0 rounded-full bg-cyan animate-pulse"
             style={{
-              boxShadow: "0 0 12px rgba(0, 200, 220, 0.3)",
+              boxShadow: "0 0 16px rgba(0, 200, 220, 0.4)",
             }}
           />
         )}
@@ -72,64 +100,81 @@ function StatusIndicator() {
   );
 }
 
-/* ─── Current focus panel ──────────────────────────────────────────────────── */
+/* ─── Premium Glass Panel — Current Focus ───────────────────────────────── */
 function CurrentFocusPanel() {
   const { label, project, description } = PERSONAL.currentFocus;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.5 }}
-      className="glass rounded-lg p-4"
+      variants={cardHover}
+      whileHover={{
+        y: -6,
+        boxShadow: "0 16px 40px rgba(0, 151, 178, 0.2)",
+      }}
+      className="glass-dark rounded-lg p-5 border border-cyan-border backdrop-blur-lg"
     >
-      <div className="text-xs font-semibold tracking-wide text-text-muted mb-2">
-        {label.toUpperCase()}
+      <div className="text-xs font-bold tracking-widest text-gold mb-2">
+        {label}
       </div>
-      <h3 className="font-semibold text-text-primary mb-1">{project}</h3>
-      <p className="text-sm text-text-secondary">{description}</p>
+      <h3 className="font-semibold text-text-primary mb-2 text-sm">{project}</h3>
+      <p className="text-xs text-text-muted leading-relaxed">{description}</p>
+
+      {/* Accent line */}
+      <div className="mt-3 h-0.5 w-12 bg-gradient-to-r from-cyan to-transparent" />
     </motion.div>
   );
 }
 
-/* ─── Minimal terminal snippet ─────────────────────────────────────────────── */
+/* ─── Premium Glass Panel — Terminal Snippet ───────────────────────────── */
 function TerminalSnippet() {
   const codeLines = [
-    '$ npm run build',
-    '> Building Shipzilla v2.1.0...',
-    '✓ 142 files compiled',
-    '✓ Ready to ship',
+    { prefix: "$", text: "npm run build", color: "cyan" },
+    { prefix: ">", text: "Building next-gen AI platform...", color: "gold" },
+    { prefix: "✓", text: "Shipped 2 products", color: "cyan" },
+    { prefix: "✓", text: "Ready for next challenge", color: "cyan" },
   ];
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.6 }}
-      className="glass rounded-lg p-4 font-mono text-xs"
+      variants={cardHover}
+      whileHover={{
+        y: -6,
+        boxShadow: "0 16px 40px rgba(0, 151, 178, 0.15)",
+      }}
+      className="glass-dark rounded-lg p-5 border border-cyan-border font-mono text-xs backdrop-blur-lg"
     >
-      <div className="space-y-1.5 text-text-secondary">
+      <div className="space-y-2 text-text-secondary">
         {codeLines.map((line, i) => (
-          <div key={i} className="flex">
-            {line.startsWith("$") && (
-              <span className="text-cyan mr-2">{line.substring(0, 1)}</span>
-            )}
-            {line.startsWith("✓") && (
-              <span className="text-cyan mr-2">✓</span>
-            )}
-            {line.startsWith(">") && (
-              <span className="text-gold mr-2">&gt;</span>
-            )}
-            <span className={line.startsWith("✓") ? "text-cyan" : ""}>
-              {line.replace(/^[$>✓]\s?/, "")}
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 + i * 0.1 }}
+            className="flex gap-2"
+          >
+            <span className={line.color === "cyan" ? "text-cyan" : "text-gold"}>
+              {line.prefix}
             </span>
-          </div>
+            <span className={line.color === "cyan" ? "text-cyan-light" : "text-white"}>
+              {line.text}
+            </span>
+          </motion.div>
         ))}
       </div>
     </motion.div>
   );
 }
-
+/* ─── Floating Tech Badge ────────────────────────────────────────────────── */
+function FloatingTechBadge({ tech, delay }: { tech: string; delay: number }) {
+  return (
+    <motion.div
+      variants={floatingVariantsOffset(delay)}
+      className="glass-light rounded-full px-3 py-1.5 border border-border-subtle text-xs font-medium text-text-secondary"
+    >
+      {tech}
+    </motion.div>
+  );
+}
 /* ─── Scroll indicator ─────────────────────────────────────────────────────── */
 function ScrollIndicator() {
   return (

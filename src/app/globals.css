@@ -180,6 +180,218 @@ body::before {
   animation: fadeInUp 0.6s ease-out;
 }
 
+/* ─── Premium Depth System ──────────────────────────────────────────────────── */
+
+/* Layered shadows for depth */
+.shadow-depth-1 {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-depth-2 {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-depth-3 {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-depth-4 {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-depth-lg {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Cyan glow system */
+.glow-cyan-xs {
+  box-shadow: 0 0 12px rgba(0, 151, 178, 0.2);
+}
+
+.glow-cyan-sm {
+  box-shadow: 0 0 20px rgba(0, 151, 178, 0.3);
+}
+
+.glow-cyan-md {
+  box-shadow: 0 0 32px rgba(0, 151, 178, 0.4);
+}
+
+.glow-cyan-lg {
+  box-shadow: 0 0 48px rgba(0, 151, 178, 0.5);
+}
+
+/* Gold glow system */
+.glow-gold-xs {
+  box-shadow: 0 0 12px rgba(184, 146, 42, 0.15);
+}
+
+.glow-gold-sm {
+  box-shadow: 0 0 20px rgba(184, 146, 42, 0.2);
+}
+
+.glow-gold-md {
+  box-shadow: 0 0 32px rgba(184, 146, 42, 0.25);
+}
+
+/* Vignette effect */
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(20, 24, 39, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+/* Backdrop effects */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Glass variants */
+.glass-light {
+  background: rgba(20, 24, 39, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.glass-medium {
+  background: rgba(27, 33, 56, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-dark {
+  background: rgba(35, 41, 70, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Depth cards */
+.card-depth {
+  position: relative;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-depth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 151, 178, 0.05) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Gradient text utilities */
+.gradient-cyan-to-gold {
+  background: linear-gradient(135deg, #0097b2 0%, #b8922a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-gold-to-cyan {
+  background: linear-gradient(135deg, #b8922a 0%, #0097b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Radial light effect */
+.radial-light-cyan {
+  position: relative;
+}
+
+.radial-light-cyan::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 151, 178, 0.15) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.radial-light-gold {
+  position: relative;
+}
+
+.radial-light-gold::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(184, 146, 42, 0.1) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+/* Floating shadow (depth below element) */
+.floating-shadow {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(0, 151, 178, 0.1);
+}
+
+/* Premium border accent */
+.border-accent-cyan {
+  border-color: var(--cyan-border);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 151, 178, 0.05) 0%,
+    transparent 100%
+  );
+}
+
 /* ─── Reduced Motion Support ────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
